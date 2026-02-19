@@ -33,10 +33,15 @@ func (c *PopplerConverter) ConvertToImages(pdfPath, outputDir string, resolution
 
 	outputPrefix := filepath.Join(outputDir, "slide")
 
+	// resolution ist die Zielhöhe in Pixeln (z.B. 1080).
+	// pdftoppm erwartet DPI. Ein Standard-16:9-Slide ist ~10" breit,
+	// also: DPI = (resolution * 16/9) / 10 = resolution * 16 / 90
+	dpi := resolution * 16 / 90
+
 	cmd := exec.Command(
 		"pdftoppm",
 		"-png",
-		"-r", fmt.Sprintf("%d", resolution),
+		"-r", fmt.Sprintf("%d", dpi),
 		pdfPath,
 		outputPrefix,
 	)

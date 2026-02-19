@@ -60,6 +60,23 @@
         class="form-control"
       />
     </div>
+
+    <div class="col-12 col-md-4">
+      <label for="transitionDuration" class="form-label d-flex justify-content-between">
+        Überblendung (Sekunden)
+        <span class="text-secondary fw-normal small">0–3</span>
+      </label>
+      <input
+        id="transitionDuration"
+        type="number"
+        min="0"
+        max="3"
+        step="0.5"
+        value={configStore.transitionDuration}
+        oninput={(event: Event) => configStore.setTransitionDuration(parseFloat((event.currentTarget as HTMLInputElement).value))}
+        class="form-control"
+      />
+    </div>
   </div>
 
   <button onclick={() => configStore.reset()} class="btn btn-outline-secondary mt-4">

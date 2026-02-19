@@ -4,6 +4,7 @@ const DEFAULT_CONFIG: ConversionConfig = {
   fps: 24,
   resolution: 1080,
   duration: 5,
+  transitionDuration: 1.0,
 };
 
 const STORAGE_KEY = 'pptx2mp4_config';
@@ -50,6 +51,9 @@ function createConfigStore() {
     get duration() {
       return config.duration;
     },
+    get transitionDuration() {
+      return config.transitionDuration;
+    },
     get current(): ConversionConfig {
       return config;
     },
@@ -66,6 +70,11 @@ function createConfigStore() {
 
     setDuration(duration: number) {
       config = { ...config, duration };
+      saveConfigToStorage(config);
+    },
+
+    setTransitionDuration(transitionDuration: number) {
+      config = { ...config, transitionDuration };
       saveConfigToStorage(config);
     },
 

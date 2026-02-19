@@ -29,9 +29,10 @@ func NewUploadHandler(
 }
 
 type ConvertRequest struct {
-	FPS        int `form:"fps" binding:"required,min=1,max=60"`
-	Resolution int `form:"resolution" binding:"required,oneof=720 1080 1440 2160"`
-	Duration   int `form:"duration" binding:"required,min=1,max=60"`
+	FPS                int     `form:"fps" binding:"required,min=1,max=60"`
+	Resolution         int     `form:"resolution" binding:"required,oneof=720 1080 1440 2160"`
+	Duration           int     `form:"duration" binding:"required,min=1,max=60"`
+	TransitionDuration float64 `form:"transitionDuration" binding:"min=0,max=3"`
 }
 
 func (h *UploadHandler) HandleUpload(c *gin.Context) {
@@ -64,7 +65,7 @@ func (h *UploadHandler) HandleUpload(c *gin.Context) {
 		return
 	}
 
-	config, err := domain.NewConversionConfig(req.FPS, req.Resolution, req.Duration)
+	config, err := domain.NewConversionConfig(req.FPS, req.Resolution, req.Duration, req.TransitionDuration)
 	if err != nil {
 		h.logger.WithError(err).Error("ungültige Konfiguration")
 		c.JSON(http.StatusBadRequest, gin.H{

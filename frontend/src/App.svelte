@@ -35,9 +35,7 @@
 
   <footer class="text-center text-white py-4 opacity-75">
     <p class="mb-0">
-      Entwickelt mit <a href="https://go.dev" target="_blank" rel="noopener" class="text-white text-decoration-underline">Go</a>
-      und
-      <a href="https://svelte.dev" target="_blank" rel="noopener" class="text-white text-decoration-underline">Svelte</a>
+      <b>iTec</b> - learn together grow together
     </p>
   </footer>
 </main>

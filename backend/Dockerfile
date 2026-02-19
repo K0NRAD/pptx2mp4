@@ -20,6 +20,10 @@ RUN apk add --no-cache \
     poppler-utils \
     ffmpeg \
     ca-certificates \
+    font-liberation \
+    font-dejavu \
+    font-noto \
+    font-noto-cjk \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /app

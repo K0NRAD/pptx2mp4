@@ -4,6 +4,7 @@ export interface ConversionConfig {
   fps: number;
   resolution: number;
   duration: number;
+  transitionDuration: number;
 }
 
 export interface JobStatus {
@@ -39,6 +40,7 @@ export class ApiClient {
     formData.append('fps', config.fps.toString());
     formData.append('resolution', config.resolution.toString());
     formData.append('duration', config.duration.toString());
+    formData.append('transitionDuration', config.transitionDuration.toString());
 
     const response = await fetch(`${this.baseUrl}/api/v1/convert`, {
       method: 'POST',
