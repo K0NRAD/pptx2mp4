@@ -9,6 +9,7 @@ import (
 	"pptx2mp4/backend/internal/converter"
 	"pptx2mp4/backend/internal/repository"
 	"pptx2mp4/backend/internal/service"
+	"pptx2mp4/backend/web"
 
 	"github.com/sirupsen/logrus"
 )
@@ -74,6 +75,8 @@ func main() {
 		healthHandler,
 		logger,
 		cfg.AllowedOrigins,
+		web.StaticFiles,
+		cfg.BasePath,
 	)
 
 	engine := router.Setup()

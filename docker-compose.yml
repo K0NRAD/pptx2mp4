@@ -1,13 +1,13 @@
-version: '3.9'
-
 services:
-  backend:
+  app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
-    container_name: pptx2mp4-backend
+      args:
+        - VITE_BASE_PATH=/pptx2mp4/
+    container_name: pptx2mp4
     ports:
-      - "8080:8080"
+      - "80:8080"
     volumes:
       - ./storage:/app/storage
     environment:
@@ -15,31 +15,13 @@ services:
       - STORAGE_PATH=/app/storage
       - MAX_FILE_SIZE=104857600
       - CLEANUP_INTERVAL=1h
-      - ALLOWED_ORIGINS=http://localhost:3000
+      - BASE_PATH=/pptx2mp4
       - LOG_LEVEL=info
       - LOG_FORMAT=json
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/v1/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/pptx2mp4/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     restart: unless-stopped
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        - VITE_API_BASE_URL=http://localhost:8080
-    container_name: pptx2mp4-frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      backend:
-        condition: service_healthy
-    restart: unless-stopped
-
-volumes:
-  storage:
-    driver: local

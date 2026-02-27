@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+// In production (embedded): BASE_URL = '/pptx2mp4/' → API unter /pptx2mp4/api/v1/...
+// Im Dev-Modus mit separatem Backend: VITE_API_BASE_URL=http://localhost:8080/pptx2mp4 setzen
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.BASE_URL.replace(/\/$/, '');
 
 export interface ConversionConfig {
   fps: number;

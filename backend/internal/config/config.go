@@ -12,6 +12,7 @@ type Config struct {
 	MaxFileSize      int64
 	CleanupInterval  time.Duration
 	AllowedOrigins   []string
+	BasePath         string
 	LogLevel         string
 	LogFormat        string
 }
@@ -23,6 +24,7 @@ func LoadConfig() *Config {
 		MaxFileSize:      getEnvAsInt64("MAX_FILE_SIZE", 100*1024*1024),
 		CleanupInterval:  getEnvAsDuration("CLEANUP_INTERVAL", time.Hour),
 		AllowedOrigins:   getEnvAsSlice("ALLOWED_ORIGINS", []string{"http://localhost:3000"}),
+		BasePath:         getEnv("BASE_PATH", "/pptx2mp4"),
 		LogLevel:         getEnv("LOG_LEVEL", "info"),
 		LogFormat:        getEnv("LOG_FORMAT", "json"),
 	}
