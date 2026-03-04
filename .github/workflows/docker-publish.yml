@@ -9,10 +9,10 @@ jobs:
   build-and-push:
     name: Build & Push
     runs-on: ubuntu-latest
-    if: github.event.base_ref == 'refs/heads/main'
+    # Die 'if'-Bedingung wurde entfernt, da 'base_ref' bei Tag-Pushes leer ist
     permissions:
       contents: read
-
+      
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,11 +35,14 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/pptx2mp4
           tags: |
-            type=ref,event=branch
+            # Erstellt einen Tag mit der exakten Version (z.B. v1.2.3)
             type=semver,pattern={{version}}
+            # Erstellt Tags für Major & Minor (z.B. v1.2 und v1)
             type=semver,pattern={{major}}.{{minor}}
+            # Setzt 'latest' immer auf den neuesten Tag-Push
+            type=raw,value=latest,enable=true
+            # Optional: Short SHA für bessere Rückverfolgbarkeit
             type=sha,prefix=sha-,format=short
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -51,5 +54,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VITE_BASE_PATH=${{ vars.VITE_BASE_PATH || '/pptx2mp4/' }}
+          # Nutzt GitHub Actions Cache für schnellere Builds
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          
