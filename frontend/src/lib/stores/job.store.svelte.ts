@@ -7,6 +7,7 @@ interface JobState {
   progress: number;
   isPolling: boolean;
   error: string | null;
+  originalFilename: string | undefined;
 }
 
 const INITIAL_STATE: JobState = {
@@ -15,6 +16,7 @@ const INITIAL_STATE: JobState = {
   progress: 0,
   isPolling: false,
   error: null,
+  originalFilename: undefined,
 };
 
 function createJobStore() {
@@ -45,17 +47,21 @@ function createJobStore() {
     get error() {
       return state.error;
     },
+    get originalFilename() {
+      return state.originalFilename;
+    },
 
     reset() {
       stopPolling();
       state = { ...INITIAL_STATE };
     },
 
-    setJob(jobId: string, status: string) {
+    setJob(jobId: string, status: string, originalFilename?: string) {
       state.jobId = jobId;
       state.status = status as JobState['status'];
       state.progress = 0;
       state.error = null;
+      state.originalFilename = originalFilename;
     },
 
     updateStatus(jobStatus: JobStatus) {

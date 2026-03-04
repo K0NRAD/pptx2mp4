@@ -59,7 +59,7 @@
 
     try {
       const response = await apiClient.convertFile(selectedFile, configStore.current);
-      jobStore.setJob(response.jobId, response.status);
+      jobStore.setJob(response.jobId, response.status, selectedFile.name);
       jobStore.startPolling(response.jobId);
       selectedFile = null;
     } catch (err) {

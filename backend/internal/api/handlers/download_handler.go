@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"net/http"
+	"path/filepath"
 	"pptx2mp4/backend/internal/domain"
 	"pptx2mp4/backend/internal/service"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -83,13 +85,20 @@ func (h *DownloadHandler) HandleDownload(c *gin.Context) {
 		return
 	}
 
+	originalName := filepath.Base(job.OriginalFile)
+	baseName := strings.TrimSuffix(originalName, filepath.Ext(originalName))
+	downloadName := baseName + ".mp4"
+
 	h.logger.WithFields(logrus.Fields{
-		"jobID":      jobID,
-		"outputFile": outputFile,
+		"jobID":        jobID,
+		"outputFile":   outputFile,
+		"downloadName": downloadName,
 	}).Info("starte Download")
 
-	c.Header("Content-Description", "File Transfer")
-	c.Header("Content-Disposition", "attachment; filename=output.mp4")
 	c.Header("Content-Type", "video/mp4")
-	c.File(outputFile)
+	c.FileAttachment(outputFile, downloadName)
+
+	if err := h.fileService.CleanupJob(jobID); err != nil {
+		h.logger.WithError(err).WithField("jobID", jobID).Warn("fehler beim Bereinigen der Job-Dateien")
+	}
 }

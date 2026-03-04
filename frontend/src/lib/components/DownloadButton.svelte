@@ -1,7 +1,7 @@
 <script lang="ts">
   import { apiClient } from '../api/api-client';
 
-  let { jobId }: { jobId: string } = $props();
+  let { jobId, filename }: { jobId: string; filename: string } = $props();
 
   let isDownloading = $state(false);
 
@@ -11,11 +11,11 @@
     isDownloading = true;
 
     try {
-      const blob = await apiClient.downloadFile(jobId);
+      const { blob, filename: downloadName } = await apiClient.downloadFile(jobId);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'output.mp4';
+      link.download = downloadName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -42,8 +42,8 @@
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    width="24"
-    height="24"
+    width="20"
+    height="20"
   >
     <path
       stroke-linecap="round"
@@ -52,5 +52,5 @@
       d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
     />
   </svg>
-  {isDownloading ? 'Wird heruntergeladen...' : 'MP4 herunterladen'}
+  {isDownloading ? 'Wird heruntergeladen...' : filename}
 </button>

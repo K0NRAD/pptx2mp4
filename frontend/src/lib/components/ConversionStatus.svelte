@@ -18,11 +18,15 @@
 
   let statusText = $derived(statusTextMap[jobStore.status || ''] || 'Unbekannt');
   let statusVariant = $derived(statusVariantMap[jobStore.status || ''] || 'secondary');
+
+  let downloadFilename = $derived(
+    (jobStore.originalFilename?.replace(/\.[^.]+$/, '') || 'output') + '.mp4'
+  );
 </script>
 
 {#if jobStore.jobId}
-  <div class="card shadow mt-4">
-    <div class="card-body p-4">
+  <div class="card shadow">
+    <div class="card-body p-3">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="h5 fw-semibold text-dark mb-0">{statusText}</h3>
         <span class="badge bg-{statusVariant} text-uppercase">
@@ -66,7 +70,7 @@
           </svg>
           <p class="mb-0 fw-medium">Ihre Datei ist bereit zum Download!</p>
         </div>
-        <DownloadButton jobId={jobStore.jobId} />
+        <DownloadButton jobId={jobStore.jobId} filename={downloadFilename} />
       {/if}
 
       {#if jobStore.status === 'failed' && jobStore.error}
@@ -90,10 +94,6 @@
           <p class="mb-0 fw-medium">{jobStore.error}</p>
         </div>
       {/if}
-
-      <div class="border-top pt-3 mt-3">
-        <p class="text-secondary small mb-0 font-monospace">Job-ID: {jobStore.jobId}</p>
-      </div>
 
       {#if jobStore.status === 'completed' || jobStore.status === 'failed'}
         <button

@@ -24,6 +24,7 @@ type FileService interface {
 	SaveUpload(jobID string, fileHeader *multipart.FileHeader) (string, error)
 	GetOutputFile(jobID string) (string, error)
 	SanitizeFilename(filename string) string
+	CleanupJob(jobID string) error
 }
 
 type FileServiceImpl struct {
@@ -99,6 +100,10 @@ func (s *FileServiceImpl) GetOutputFile(jobID string) (string, error) {
 	}
 
 	return outputPath, nil
+}
+
+func (s *FileServiceImpl) CleanupJob(jobID string) error {
+	return s.fileRepo.CleanupJob(jobID)
 }
 
 func (s *FileServiceImpl) SanitizeFilename(filename string) string {

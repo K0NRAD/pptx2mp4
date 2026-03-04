@@ -74,7 +74,7 @@ export class ApiClient {
     return `${this.baseUrl}/api/v1/jobs/${jobId}/download`;
   }
 
-  async downloadFile(jobId: string): Promise<Blob> {
+  async downloadFile(jobId: string): Promise<{ blob: Blob; filename: string }> {
     const response = await fetch(this.getDownloadUrl(jobId));
 
     if (!response.ok) {
@@ -82,7 +82,11 @@ export class ApiClient {
       throw new Error(error.message || 'Download fehlgeschlagen');
     }
 
-    return response.blob();
+    const disposition = response.headers.get('Content-Disposition') ?? '';
+    const match = disposition.match(/filename="([^"]+)"/);
+    const filename = match ? match[1] : `${jobId}.mp4`;
+
+    return { blob: await response.blob(), filename };
   }
 
   async checkHealth(): Promise<{ status: string; [key: string]: any }> {

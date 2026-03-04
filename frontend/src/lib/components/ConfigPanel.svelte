@@ -10,13 +10,13 @@
 </script>
 
 <div>
-  <h3 class="h5 fw-semibold text-dark mb-4">Konvertierungs-Einstellungen</h3>
+  <h3 class="h5 fw-semibold text-dark mb-3">Konvertierungs-Einstellungen</h3>
 
-  <div class="row g-4">
-    <div class="col-12 col-md-4">
+  <div class="row g-3 align-items-end">
+    <div class="col">
       <label for="fps" class="form-label d-flex justify-content-between">
-        FPS (Frames per Second)
-        <span class="text-secondary fw-normal small">1-60</span>
+        FPS
+        <span class="text-secondary fw-normal small">1–60</span>
       </label>
       <input
         id="fps"
@@ -29,10 +29,8 @@
       />
     </div>
 
-    <div class="col-12 col-md-4">
-      <label for="resolution" class="form-label">
-        Auflösung
-      </label>
+    <div class="col">
+      <label for="resolution" class="form-label">Auflösung</label>
       <select
         id="resolution"
         value={configStore.resolution}
@@ -45,10 +43,10 @@
       </select>
     </div>
 
-    <div class="col-12 col-md-4">
+    <div class="col">
       <label for="duration" class="form-label d-flex justify-content-between">
-        Dauer pro Slide (Sekunden)
-        <span class="text-secondary fw-normal small">1-60</span>
+        Dauer / Slide (s)
+        <span class="text-secondary fw-normal small">1–60</span>
       </label>
       <input
         id="duration"
@@ -61,9 +59,9 @@
       />
     </div>
 
-    <div class="col-12 col-md-4">
+    <div class="col">
       <label for="transitionDuration" class="form-label d-flex justify-content-between">
-        Überblendung (Sekunden)
+        Überblendung (s)
         <span class="text-secondary fw-normal small">0–3</span>
       </label>
       <input
@@ -77,9 +75,11 @@
         class="form-control"
       />
     </div>
-  </div>
 
-  <button onclick={() => configStore.reset()} class="btn btn-outline-secondary mt-4">
-    Auf Standardwerte zurücksetzen
-  </button>
+    <div class="col-auto">
+      <button onclick={() => configStore.reset()} class="btn btn-outline-secondary">
+        Reset
+      </button>
+    </div>
+  </div>
 </div>
