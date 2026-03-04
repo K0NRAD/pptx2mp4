@@ -9,7 +9,6 @@ jobs:
   build-and-push:
     name: Build & Push
     runs-on: ubuntu-latest
-    # Die 'if'-Bedingung wurde entfernt, da 'base_ref' bei Tag-Pushes leer ist
     permissions:
       contents: read
       
